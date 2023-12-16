@@ -1,96 +1,108 @@
 const data = [
-    { name: "john", age: 24, profession: "developer" },
-    { name: "jane", age: 27, profession: "admin" },
-  ];
-  
-  // 1. Print Developers
-  function printDeveloper() {
-    const developers = data.filter((person) => person.profession === 'developer');
-    console.log(developers);
-  
-  }
-  
-  // 2. Add Data
-  function addData() {
-    const NewName = prompt('Enter name:');
-    const NewAge = parseInt(prompt('Enter age:'), 10);
-    const NewProfession = prompt('Enter profession:');
-  
-    if (!NewName || isNaN(NewAge) || !NewProfession) {
-      alert('Invalid input. Please enter valid details.');
-      return;
+  { name: "john", age: 24, profession: "developer" },
+  { name: "jane", age: 27, profession: "admin" },
+];
+
+// 1. Print Developers
+function printDeveloper() {
+  let count = 0;
+
+  data.forEach((person) => {
+    if (person.profession === "developer") {
+      count++;
+      console.log(person.name);
     }
-  
-    const NewData = { name: NewName, age: NewAge, profession: NewProfession };
-    data.push(NewData);
-    console.log(data);
-  
-  }
-  
-  // 3. Remove Admins
-  function removeAdmin() {
-    const filteredData = data.filter((person) => person.profession !== 'admin');
-    console.log(filteredData);
+  });
 
+  if (count === 0) {
+    console.log("I apologize, but there are no developers present here.");
   }
-  
-  // 4. Concatenate Array
-  function concatenateArray() {
-    const dummyArray = [
-        { name: 'Ashwini', age: 30, profession: 'tester' },
-        { name: 'Pradeep', age: 25, profession: 'designer' }
-    ];
+}
 
-    const resultArray = data.concat(dummyArray);
-    console.log("Concatenated Array:", resultArray);
-  }
-  
-  // 5. Average Age
-  function averageAge() {
-    const sum = data.reduce((acc, dev) => acc + dev.age, 0);
-    const average = sum / data.length;
-    console.log("Average Age:", average.toFixed(2));
-  }
-  
-  // 6. Age Check
-  function checkAgeAbove25() {
-    const isAbove25 = data.some(dev => dev.age > 25);
-    console.log("At last one person is above 25:", isAbove25);
-  }
-  
-  // 7. Unique Professions
-  function uniqueProfessions() {
-    const professions = [...new Set(data.map((person) => person.profession))];
-    console.log(professions);
-  
-    
-  }
-  
-  // 8. Sort by Age
-  function sortByAge() {
-    const sortedData = [...data].sort((a, b) => a.age - b.age);
-    console.log(sortedData);
+// 2. Add Data
+function addData() {
+  const name = prompt("Enter name:").trim();
+  const age = parseInt(prompt("Enter age:"));
+  const profession = prompt("Enter profession:").trim();
 
+  data.push({ name, age, profession });
+  console.log("Data Added Successfully.");
+}
+
+// 3. Remove Admins
+function removeAdmin() {
+  for (let i = data.length - 1; i >= 0; i--) {
+    if (data[i].profession === "admin") {
+      data.splice(i, 1);
+    }
   }
-  
-  // 9. Update Profession
-  function updateJohnsProfession() {
-    const updatedData = data.map((person) => {
-        if (person.name === 'john') {
-          return { ...person, profession: 'manager' };
-        }
-        return person;
-      });
-      console.log(updatedData);
-    
+  console.log("All admin profiles have been removed.");
+}
+
+// 4. Concatenate Array
+function concatenateArray() {
+  const dummyArray = [
+    { name: "Ashwini", age: 24, profession: "developer" },
+    { name: "Anvi", age: 21, profession: "designer" },
+  ];
+
+  const resultArray = data.concat(dummyArray);
+  console.log("Here is your concatenated array.", resultArray);
+}
+
+// 5. Average Age
+function averageAge() {
+  const totalAge = data.reduce((sum, person) => sum + person.age, 0);
+  const avgAge = Math.floor(totalAge / data.length);
+  console.log("The average age of all profiles is : ", avgAge);
+}
+
+// 6. Age Check
+function checkAgeAbove25() {
+  const above25 = data.some((person) => person.age > 25);
+  console.log(
+    above25
+      ? "Yes, there are some profiles with an age above 25."
+      : "No, there is no profile with an age above 25."
+  );
+}
+
+// 7. Unique Professions
+function uniqueProfessions() {
+  const professions = new Set(data.map((person) => person.profession));
+  console.log("List of all professions.");
+  Array.from(professions).forEach((profession) => console.log(profession));
+}
+
+// 8. Sort by Age
+function sortByAge() {
+  data.sort((a, b) => a.age - b.age);
+  console.log("The array has been sorted in ascending order based on age.");
+}
+
+// 9. Update Profession
+function updateJohnsProfession() {
+  const johnToUpdate = data.find(
+    (person) => person.name === "john" && person.profession !== "manager"
+  );
+
+  if (johnToUpdate) {
+    johnToUpdate.profession = "manager";
+    console.log("John's profession has been updated to 'manager'");
+  } else {
+    console.log("No eligible John found for profession update");
   }
-  
-  // 10. Profession Count
-  function getTotalProfessions() {
-    const professionCount = data.reduce((count, person) => {
-        count[person.profession] = (count[person.profession] || 0) + 1;
-        return count;
-      }, {});
-      console.log(professionCount);
-    
-  }
+}
+
+// 10. Profession Count
+function getTotalProfessions() {
+  const professionCount = data.reduce((count, person) => {
+    if (person.profession === "developer" || person.profession === "admin") {
+      count[person.profession] = (count[person.profession] || 0) + 1;
+    }
+    return count;
+  }, {});
+
+  console.log("Developer Count:", professionCount.developer || 0);
+  console.log("Admin Count:", professionCount.admin || 0);
+}
